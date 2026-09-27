@@ -1,0 +1,4 @@
+Add this line inside the $routeMiddleware (Laravel <=10) or $middlewareAliases
+(Laravel 11) array in app/Http/Kernel.php:
+
+    'api.key' => \App\Http\Middleware\AuthenticateMerchantApiKey::class,
