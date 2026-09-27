@@ -119,7 +119,7 @@ php artisan schedule:work
 
 ### Production cron entry (crontab -e)
 ```
-* * * * * cd /path-to-project && php artisan schedule:run >> /dev/null 2>&1
+php artisan schedule:run 
 ```
 
 ---
@@ -252,11 +252,8 @@ queryable version of the same events.
 
 ## 9. Git
 
-```powershell
 git init
 git add .
-git commit -m "Pay-in & Payout module with Laravel + Backpack"
+git commit -m "Pay-in & Payout module with Laravel inlcuding Backpack(for admin dashboard)"
 git remote add origin <your-repo-url>
 git push -u origin main
-```
-`.env` is excluded via `.gitignore` — never commit real credentials.
