@@ -33,8 +33,6 @@ class MerchantSeeder extends Seeder
 
         foreach ($merchants as $data) {
             $merchant = Merchant::firstOrCreate(['email' => $data['email']], $data);
-
-            // give the demo merchant some starting balance so payouts can be tested too
             $merchant->wallet()->update(['balance' => 10000]);
         }
     }

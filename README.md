@@ -232,7 +232,7 @@ Logged at every stage:
 - payout failed due to insufficient balance
 - any exception during initiation or processing
 
-Check `storage/logs/laravel.log`, plus the `payment_logs` table for a structured,
+Check `storage/logs/laravel.log`, also check the `payment_logs` table for a structured,
 queryable version of the same events.
 
 ---

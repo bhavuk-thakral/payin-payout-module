@@ -2,15 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Backpack admin CRUD routes
-|--------------------------------------------------------------------------
-| After `php artisan backpack:install`, this file already exists —
-| just append the four Route::crud() lines below to it (or replace
-| the file with this one). All routes are prefixed with /admin and
-| protected by Backpack's own auth middleware automatically.
-*/
 
 Route::group([
     'prefix' => config('backpack.base.route_prefix', 'admin'),
