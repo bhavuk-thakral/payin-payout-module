@@ -8,8 +8,52 @@ sure a payment can never get processed (and never move a wallet balance) more th
 **Pay-in** = money coming in from a customer to the merchant — adds to the merchant's
 wallet balance once it succeeds.
 
+Find below curl for Initiate payin 
+cURL:
+```bash
+curl -X POST http://127.0.0.1:8000/api/v1/payins \
+  -H "X-API-KEY: test_api_key_demo_store_123456" \
+  -H "Content-Type: application/json" \
+  -d '{"amount": 1000, "customer_name": "Rahul Sharma", "customer_email": "rahul@example.com"}'
+```
+
+**Response `201`**
+```json
+{
+  "success": true,
+  "message": "Pay-in initiated",
+  "data": {
+    "transaction_id": "PIN-20260926-AB12CD34",
+    "status": "PENDING",
+    "amount": "1000.00",
+    "currency": "INR",
+    "created_at": "2026-09-26T10:00:00.000000Z"
+  }
+}
+
 **Payout** = money going out from the merchant to someone else (a vendor, a
 beneficiary bank account) — deducts from the merchant's wallet balance.
+
+Find below curl for Initiate payout
+
+curl -X POST http://127.0.0.1:8000/api/v1/payouts \
+  -H "X-API-KEY: test_api_key_demo_store_123456" \
+  -H "Content-Type: application/json" \
+  -d '{"amount": 300, "beneficiary_name": "Priya Verma", "beneficiary_account": "123456789012", "ifsc_code": "HDFC0001234"}'
+
+**Response `201`**
+```json
+{
+    "success": true,
+    "message": "Payout initiated",
+    "data": {
+        "transaction_id": "POUT-20260927-PEUUBOIO",
+        "status": "PENDING",
+        "amount": "300.00",
+        "currency": "INR",
+        "created_at": "2026-09-27T10:31:22.000000Z"
+    }
+}
 ---
 
 ## 1. Tech / Structure
@@ -43,11 +87,11 @@ protection) lives in `app/Services`.
 
 ## 2. Database Design
 
-| Table | Purpose |
-| `merchants` | merchant account + unique `api_key` for API auth |
-| `wallets` | one row per merchant, holds current `balance` |
-| `payins` / `payouts` | one row per payment attempt — unique `transaction_id`, `status` enum (`PENDING`/`SUCCESS`/`FAILED`), full request stored in a `meta` json column for audit |
-| `payment_logs` | append-only event log for every pay-in/payout — initiation, status changes, processing outcome — used for auditing and debugging |
+ # Table , Purpose 
+ `merchants` -> merchant account + unique `api_key` for API auth ,
+ `wallets` -> one row per merchant, holds current `balance` ,
+ `payins` / `payouts` -> one row per payment attempt — unique `transaction_id`, `status` enum (`PENDING`/`SUCCESS`/`FAILED`), full request stored in a `meta` json column for audit ->
+ `payment_logs` -> append-only event log for every pay-in/payout (initiation, status changes,   processing outcome),used for auditing and debugging ,
 
 Relationships: `Merchant hasOne Wallet`, `Merchant hasMany Payin/Payout`.
 
@@ -129,9 +173,9 @@ php artisan schedule:run
 Every request needs an `X-API-KEY` header identifying the merchant. Seeded demo
 merchants:
 
-| Merchant | API Key |
-| Demo Store Pvt Ltd | `test_api_key_demo_store_123456` |
-| Second Merchant Co | `test_api_key_second_merchant_654321` |
+ Merchant -> API Key 
+1. Demo Store Pvt Ltd ->`test_api_key_demo_store_123456` 
+2. Second Merchant Co -> `test_api_key_second_merchant_654321` 
 
 New merchants created through the admin panel get their key auto-generated — check
 the Preview page, or run `php artisan tinker` and:
